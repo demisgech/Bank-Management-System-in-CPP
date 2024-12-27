@@ -177,3 +177,13 @@ void ArrayList<T>::reverse() {
     --rightIndex;
   }
 }
+
+template <typename T>
+T* ArrayList<T>::begin() {
+  return &data[0];
+}
+
+template <typename T>
+T* ArrayList<T>::end() {
+  return &data[size];
+}

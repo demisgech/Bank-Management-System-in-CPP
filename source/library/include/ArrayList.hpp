@@ -38,6 +38,9 @@ class ArrayList {
 
   T* getAllData() const;
   void reverse();
+
+  T* begin();
+  T* end();
 };
 
 #include "../src/ArrayList.inl"
