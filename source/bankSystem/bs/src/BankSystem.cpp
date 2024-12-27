@@ -15,7 +15,7 @@ BankSystem::BankSystem() {
 BankSystem::~BankSystem() {
   delete users;
   delete bankService;
-  delete currentUser;
+  if (currentUser != nullptr) delete currentUser;
 }
 
 void BankSystem::registerUser(const string& username, const string& password,
@@ -47,7 +47,6 @@ bool BankSystem::login(const string& username, const string& password) {
 }
 
 void BankSystem::logout() {
-  delete currentUser;
   this->currentUser = nullptr;
   cout << "Logged out successfully!" << endl;
 }
@@ -61,31 +60,37 @@ BankAccount* BankSystem::getAccountByNumber(const string& accountNumber) const {
 
 void BankSystem::performTask(int choice) {
   BankAccount* account = selectAccount();
+  if (!account) {
+    cout << "No account selected!" << endl;
+    return;
+  }
+
   switch (choice) {
-    case 1: {
+    case 1:
       displayBalance(account);
+      cout << "Control doesn't reach here" << endl;
       break;
-    }
-    case 2: {
+
+    case 2:
       handleDeposit(account);
       break;
-    }
-    case 3: {
+
+    case 3:
       handleWithdraw(account);
       break;
-    }
-    case 4: {
+
+    case 4:
       handleTransfer(account);
       break;
-    }
-    case 5: {
+
+    case 5:
       bankService->printStatement(account);
       break;
-    }
-    case 6: {
+
+    case 6:
       logout();
       break;
-    }
+
     default:
       cout << "Invalid choice! Please, try again!" << endl;
       break;
@@ -95,18 +100,29 @@ void BankSystem::performTask(int choice) {
 BankAccount* BankSystem::selectAccount() {
   auto accounts = currentUser->getAccounts();
   auto keySet = accounts->keySet();
+  BankAccount* account;
   auto it = keySet.begin();
-  if (it != keySet.end()) {
-    auto accountNumber = *it;
-    return getAccountByNumber(accountNumber);
+  for (long i = 0; i < keySet.getSize(); i++) {
+    auto accountNumber = keySet[i];
+    account = getAccountByNumber(accountNumber);
   }
+
+  if (account) {
+    return account;
+  }
+
+  // if (it != keySet.end()) {
+  //   auto accountNumber = *it;
+  //   return getAccountByNumber(accountNumber);
+  // }
   cout << "No accounts found!" << endl;
   return nullptr;
 }
 
 void BankSystem::displayBalance(BankAccount* account) {
   if (account != nullptr) {
-    cout << "Balance: $" << account->getBalance() << endl;
+    double balance = account->getBalance();
+    cout << "Balance: $" << balance << endl;
   }
 }
 
@@ -151,12 +167,14 @@ double BankSystem::getAmountFromUser(const string& prompt) {
   cout << prompt;
   double amount;
   cin >> amount;
+  // cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   return amount;
 }
 
 string BankSystem::getStringFromUser(const string& prompt) {
   cout << prompt;
   string input;
-  getline(cin, input, '\n');
+  cin >> input;
+  // cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   return input;
 }
