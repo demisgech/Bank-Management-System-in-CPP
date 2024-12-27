@@ -37,11 +37,12 @@ void User::createAccount(const string& accountNumber, double initialBalance) {
   BankAccount* account;
   cout << "Account Type: " << endl
        << "1. Checking" << endl
-       << "1. Saving" << endl
-       << "2. Checking" << endl
+       << "2. Saving" << endl
        << "Choice: ";
   int choice;
   cin >> choice;
+  cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
   switch (choice) {
     case 1:
       account = new CheckingAccount(accountNumber, initialBalance, 10);

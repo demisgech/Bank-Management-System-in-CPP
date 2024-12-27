@@ -1,46 +1,105 @@
 #include <iostream>
 
-#include "ArrayList.hpp"
-#include "HashMap.hpp"
+#include "BankSystem.hpp"
 
 using namespace std;
 
-int main() {
-  cout << "Test ArrayList library" << endl;
+class Main {
+ private:
+  static BankSystem bankSystem;
 
-  ArrayList<int> arrayList = {1, 2, 3};
-  arrayList.addFirst(10);
-  arrayList.addLast(11);
-
-  auto value = arrayList[0];
-  cout << "Value: " << value << endl;
-
-  long size = arrayList.getSize();
-  cout << "Size: " << size << endl;
-
-  arrayList.deleteAt(arrayList.getSize() - 1);
-
-  size = arrayList.getSize();
-  cout << "Size: " << size << endl;
-
-  auto lastValue = arrayList[arrayList.getSize() - 1];
-  cout << "Last value: " << lastValue;
-
-  cout << endl << "Test HashMap library" << endl;
-
-  HashMap<int, string> hashMap;
-  hashMap.put(1, "Demis");
-  hashMap.put(2, "Abebe");
-  auto hashedValue = hashMap.get(2);
-  cout << "Value: " << hashedValue << endl;
-
-  auto keys = hashMap.keySet();
-  cout << "{ " << endl;
-  for (long i = 0; i < keys.getSize(); i++) {
-    auto key = keys.get(i);
-    cout << "Key: " << key << ", Value: " << hashMap.get(key) << endl;
+ public:
+  static void main() {
+    while (true) {
+      cout << "*************************" << endl
+           << "*   Welcome to          *" << endl
+           << "*   Bank Management     *" << endl
+           << "*      System           *" << endl;
+      cout << "1. Register" << endl
+           << "2. Login" << endl
+           << "3. Exit" << endl
+           << "Choice: ";
+      int choice;
+      cin >> choice;
+      cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      if (performTask(choice)) return;
+    }
   }
-  cout << "}" << endl;
+
+ private:
+  static bool performTask(int choice) {
+    switch (choice) {
+      case 1:
+        registerUser();
+        break;
+      case 2:
+        login();
+        break;
+      case 3:
+        cout << "Exiting the system....." << endl;
+        return true;
+      default:
+        cout << "Invalid choice! Please try again!" << endl;
+    }
+    return false;
+  }
+
+  static void login() {
+    string username = getStringFromUser("Username: ");
+    string password = getStringFromUser("Password: ");
+    bool isLoggedIn = bankSystem.login(username, password);
+    if (isLoggedIn) {
+      while (true) {
+        cout << "1. Check Balance" << endl
+             << "2. Deposite" << endl
+             << "3. Withdraw" << endl
+             << "4. Transfer" << endl
+             << "5. Print statement" << endl
+             << "6. Logout" << endl
+             << "Choice: ";
+        int choice;
+        cin >> choice;
+        // cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (choice == 6) {
+          logout();
+          break;
+        }
+        bankSystem.performTask(choice);
+      }
+    }
+  }
+
+  static void logout() { bankSystem.logout(); }
+  static void registerUser() {
+    string username = getStringFromUser("Username: ");
+    string password = getStringFromUser("Password:");
+    string accountNumber = getStringFromUser("Account Number: ");
+    cout << "Initial Balace: ";
+    double initialBalance;
+    cin >> initialBalance;
+    // cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    bankSystem.registerUser(username, password, accountNumber, initialBalance);
+  }
+
+  static string getStringFromUser(const string& prompt) {
+    cout << prompt;
+    string input;
+    cin >> input;
+    // cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    return input;
+  }
+};
+
+BankSystem Main::bankSystem;
+
+int main() {
+  try {
+    Main::main();
+
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+  }
 
   return 0;
 }

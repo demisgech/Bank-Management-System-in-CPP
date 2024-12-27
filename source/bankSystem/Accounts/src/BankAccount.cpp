@@ -4,9 +4,9 @@
 
 using namespace std;
 
-BankAccount::BankAccount(const string& accountNumber, double intialBalance) {
+BankAccount::BankAccount(const string& accountNumber, double initialBalance) {
   this->accountNumber = accountNumber;
-  this->balance = balance;
+  this->balance = initialBalance;
 }
 
 double BankAccount::getBalance() const { return balance; }

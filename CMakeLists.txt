@@ -19,6 +19,13 @@ add_executable(run main.cpp
                 ./source/bankSystem/Transactions/src/WithdrawTransaction.cpp
                 ./source/bankSystem/Transactions/src/DepositTransaction.cpp
                 ./source/bankSystem/Transactions/src/TransferTransaction.cpp
+
+                ./source/bankSystem/Users/src/Admin.cpp
+                ./source/bankSystem/Users/src/User.cpp
+                ./source/bankSystem/Users/src/Customer.cpp
+
+                ./source/bankSystem/Services/src/BankService.cpp
+                ./source/bankSystem/bs/src/BankSystem.cpp
                 )
 
 target_compile_features(run PRIVATE cxx_std_23)
@@ -28,3 +35,6 @@ target_include_directories(run PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/librar
 target_include_directories(run PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/bankSystem/accounts/include)
 target_include_directories(run PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/bankSystem/Exceptions/include)
 target_include_directories(run PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/bankSystem/Transactions/include)
+target_include_directories(run PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/bankSystem/Users/include)
+target_include_directories(run PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/bankSystem/Services/include)
+target_include_directories(run PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/bankSystem/bs/include)
