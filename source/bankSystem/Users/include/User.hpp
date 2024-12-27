@@ -15,7 +15,7 @@ class User {
   User(const string& username, const string& paasword);
 
   string getUsername();
-  bool checkPassword() const;
+  bool checkPassword(const string& password) const;
   void addAccount(BankAccount* account);
 
   Map<string, BankAccount*>* getAccounts();

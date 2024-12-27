@@ -16,7 +16,9 @@ User::User(const string& username, const string& paasword) {
 
 string User::getUsername() { return username; }
 
-bool User::checkPassword() const { return this->password == password; }
+bool User::checkPassword(const string& password) const {
+  return this->password == password;
+}
 
 void User::addAccount(BankAccount* account) {
   this->accounts->put(account->getAccountNumber(), account);
