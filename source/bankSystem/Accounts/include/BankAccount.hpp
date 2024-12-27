@@ -16,7 +16,7 @@ class BankAccount {
   ArrayList<Transaction*> transactions;
 
  public:
-  BankAccount(const string& accountNumber, double intialBalance);
+  BankAccount(const string& accountNumber, double initialBalance);
   virtual ~BankAccount() = default;
 
   double getBalance() const;
