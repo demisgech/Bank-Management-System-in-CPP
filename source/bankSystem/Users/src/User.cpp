@@ -52,4 +52,5 @@ void User::createAccount(const string& accountNumber, double initialBalance) {
     default:
       return;
   }
+  addAccount(account);
 }
