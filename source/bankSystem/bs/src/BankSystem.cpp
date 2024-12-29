@@ -68,7 +68,6 @@ void BankSystem::performTask(int choice) {
   switch (choice) {
     case 1:
       displayBalance(account);
-      cout << "Control doesn't reach here" << endl;
       break;
 
     case 2:
@@ -98,25 +97,30 @@ void BankSystem::performTask(int choice) {
 }
 
 BankAccount* BankSystem::selectAccount() {
-  auto accounts = currentUser->getAccounts();
-  auto keySet = accounts->keySet();
-  BankAccount* account;
-  auto it = keySet.begin();
-  for (long i = 0; i < keySet.getSize(); i++) {
-    auto accountNumber = keySet[i];
-    account = getAccountByNumber(accountNumber);
-  }
+  try {
+    auto accounts = currentUser->getAccounts();
+    auto keySet = accounts->keySet();
+    if (keySet.getSize() == 0) {
+      cout << "No account found!" << endl;
+      return nullptr;
+    }
 
-  if (account) {
-    return account;
-  }
+    BankAccount* account = nullptr;
+    auto it = keySet.begin();
+    for (long i = 0; i < keySet.getSize(); i++) {
+      auto accountNumber = keySet[i];
+      account = getAccountByNumber(accountNumber);
+      if (account) {
+        return account;
+      }
+    }
 
-  // if (it != keySet.end()) {
-  //   auto accountNumber = *it;
-  //   return getAccountByNumber(accountNumber);
-  // }
-  cout << "No accounts found!" << endl;
-  return nullptr;
+    cout << "No valid account found!" << endl;
+    return nullptr;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return nullptr;
+  }
 }
 
 void BankSystem::displayBalance(BankAccount* account) {
