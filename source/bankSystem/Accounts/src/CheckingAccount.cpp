@@ -15,7 +15,7 @@ void CheckingAccount::deposit(double amount) {
   if (amount <= 0) {
     throw NegativeAmountException{"Amount cannot be negative! or zero!"};
   }
-  this->balance += balance;
+  this->balance += amount;
   this->addTransaction(new DepositTransaction(this, amount));
 }
 
