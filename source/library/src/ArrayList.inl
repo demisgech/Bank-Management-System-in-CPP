@@ -157,9 +157,10 @@ bool ArrayList<T>::isEmpty() const {
 
 template <typename T>
 void ArrayList<T>::clear() {
+  delete[] data;
+  data = new T[1];
   size = 0;
-  data = nullptr;
-  resize(1);
+  capacity = 1;
 }
 
 template <typename T>
