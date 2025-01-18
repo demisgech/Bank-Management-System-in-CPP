@@ -1,8 +1,9 @@
 #ifndef BANKSYSTEM__HPP
 #define BANKSYSTEM__HPP
 
+#include <memory>
 #include <string>
-using std::string;
+using namespace std;
 
 #include "BankAccount.hpp"
 #include "BankService.hpp"
@@ -12,8 +13,8 @@ using std::string;
 class BankSystem {
  private:
   BankService* bankService;
-  Map<string, User*>* users;
-  User* currentUser;
+  shared_ptr<Map<string, User*>> users;
+  shared_ptr<User> currentUser;
 
   // Handlers
   BankAccount* selectAccount();
@@ -31,7 +32,7 @@ class BankSystem {
                     const string& accountNumber, double initialBalance);
   bool login(const string& username, const string& password);
   void logout();
-  User* getCurrentUser() const;
+  shared_ptr<User> getCurrentUser() const;
   BankAccount* getAccountByNumber(const string& accountNumber) const;
   void performTask(int choice);
 };

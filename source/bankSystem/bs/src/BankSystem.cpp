@@ -9,14 +9,11 @@ using namespace std;
 
 BankSystem::BankSystem() {
   this->bankService = new BankService();
-  this->users = new HashMap<string, User*>();
+  this->users = make_shared<HashMap<string, User*>>();
+  currentUser = nullptr;
 }
 
-BankSystem::~BankSystem() {
-  delete users;
-  delete bankService;
-  if (currentUser != nullptr) delete currentUser;
-}
+BankSystem::~BankSystem() { delete bankService; }
 
 void BankSystem::registerUser(const string& username, const string& password,
                               const string& accountNumber,
@@ -38,7 +35,7 @@ void BankSystem::registerUser(const string& username, const string& password,
 bool BankSystem::login(const string& username, const string& password) {
   User* user = users->get(username);
   if (user != nullptr && user->checkPassword(password)) {
-    this->currentUser = user;
+    this->currentUser = shared_ptr<User>(user);
     cout << "User successfully logged in!" << endl;
     return true;
   }
@@ -51,7 +48,10 @@ void BankSystem::logout() {
   cout << "Logged out successfully!" << endl;
 }
 
-User* BankSystem::getCurrentUser() const { return currentUser; }
+shared_ptr<User> BankSystem::getCurrentUser() const {
+  return currentUser;
+  // return shared_ptr<User>(currentUser);
+}
 
 BankAccount* BankSystem::getAccountByNumber(const string& accountNumber) const {
   if (currentUser != nullptr) return currentUser->getAccount(accountNumber);
@@ -171,7 +171,7 @@ double BankSystem::getAmountFromUser(const string& prompt) {
   cout << prompt;
   double amount;
   cin >> amount;
-  // cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   return amount;
 }
 
@@ -179,6 +179,6 @@ string BankSystem::getStringFromUser(const string& prompt) {
   cout << prompt;
   string input;
   cin >> input;
-  // cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   return input;
 }
