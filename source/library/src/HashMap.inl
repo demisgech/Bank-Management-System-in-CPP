@@ -85,7 +85,7 @@ V HashMap<K, V>::get(const K& key) {
     }
     node = node->next;
   }
-  throw HashMapException("Key not found!");
+  return V();
 }
 
 template <typename K, typename V>
